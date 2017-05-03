@@ -38,13 +38,13 @@ class ViewController: UIViewController, SCNSceneRendererDelegate, MKMapViewDeleg
         
         let newView = SCNView()
         newView.delegate = self
-        newView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)
-        newView.backgroundColor = UIColor.clearColor()
+        newView.frame = CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: self.view.frame.size.height)
+        newView.backgroundColor = UIColor.clear
 
         // Retrieve the SCNView
         self.scnView  = newView
         self.scnView!.delegate = self
-        self.scnView!.playing = true
+        self.scnView!.isPlaying = true
         
         self.scnView!.scene = scene
         self.view.addSubview(newView)
@@ -60,72 +60,72 @@ class ViewController: UIViewController, SCNSceneRendererDelegate, MKMapViewDeleg
         self.locationManager.requestWhenInUseAuthorization()
         self.locationManager.startUpdatingLocation()
         
-        let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.Dark)
+        let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.dark)
         blurEffectView = UIVisualEffectView(effect: blurEffect)
         blurEffectView!.frame = view.bounds
         blurEffectView?.alpha = 0.0
-        blurEffectView!.autoresizingMask = [.FlexibleWidth, .FlexibleHeight] // for supporting device rotation
+        blurEffectView!.autoresizingMask = [.flexibleWidth, .flexibleHeight] // for supporting device rotation
         self.view.addSubview(blurEffectView!)
         
         map = MKMapView()
-        map!.frame = CGRectMake(12, self.view.frame.size.height-102, 90, 90)
+        map!.frame = CGRect(x: 12, y: self.view.frame.size.height-102, width: 90, height: 90)
         map!.layer.cornerRadius = map!.frame.size.width/2
         map!.alpha = 0.666
         map!.delegate = self
         map!.layer.borderWidth = 4
-        map!.layer.borderColor = UIColor.whiteColor().CGColor
-        map!.userInteractionEnabled = false
+        map!.layer.borderColor = UIColor.white.cgColor
+        map!.isUserInteractionEnabled = false
         map!.showsUserLocation = true
-        self.view.addSubview(map!)
-        self.view.bringSubviewToFront(map!)
+        //self.view.addSubview(map!)
+        //self.view.bringSubview(toFront: map!)
         
         mapBkg = UIView()
         mapBkg?.frame = self.view.frame
         
         
-        let mapButton = UIButton()
-        mapButton.frame = CGRectMake(12, self.view.frame.size.height-102, 90, 90)
-        mapButton.backgroundColor = UIColor.clearColor()
-        mapButton.addTarget(self, action: #selector(selectMap), forControlEvents: UIControlEvents.TouchDown)
-        mapButton.addTarget(self, action: #selector(releaseMap), forControlEvents: UIControlEvents.TouchDragExit)
-        mapButton.addTarget(self, action: #selector(showMapFullscreen), forControlEvents: UIControlEvents.TouchUpInside)
-        self.view.addSubview(mapButton)
-        self.view.bringSubviewToFront(mapButton)
+//        let mapButton = UIButton()
+//        mapButton.frame = CGRect(x: 12, y: self.view.frame.size.height-102, width: 90, height: 90)
+//        mapButton.backgroundColor = UIColor.clear
+//        mapButton.addTarget(self, action: #selector(selectMap), for: UIControlEvents.touchDown)
+//        mapButton.addTarget(self, action: #selector(releaseMap), for: UIControlEvents.touchDragExit)
+//        mapButton.addTarget(self, action: #selector(showMapFullscreen), for: UIControlEvents.touchUpInside)
+//        self.view.addSubview(mapButton)
+//        self.view.bringSubview(toFront: mapButton)
         
     }
     
     func selectMap () {
-        UIView.animateWithDuration(0.12, animations: {
-            self.map?.transform = CGAffineTransformMakeScale(0.9, 0.9)
-            }) { (true) in
-        }
+        UIView.animate(withDuration: 0.12, animations: {
+            self.map?.transform = CGAffineTransform(scaleX: 0.9, y: 0.9)
+            }, completion: { (true) in
+        }) 
     }
     
     func releaseMap () {
         
-        UIView.animateWithDuration(0.1, animations: {
-            self.map?.transform = CGAffineTransformMakeScale(1.07, 1.07)
-        }) { (true) in
-            UIView.animateWithDuration(0.09, animations: {
-                self.map?.transform = CGAffineTransformMakeScale(1.0, 1.0)
-            }) { (true) in
-            }
-        }
+        UIView.animate(withDuration: 0.1, animations: {
+            self.map?.transform = CGAffineTransform(scaleX: 1.07, y: 1.07)
+        }, completion: { (true) in
+            UIView.animate(withDuration: 0.09, animations: {
+                self.map?.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
+            }, completion: { (true) in
+            }) 
+        }) 
     }
     
     func showMapFullscreen () {
         
-        UIView.animateWithDuration(0.12, animations: {
-            self.map?.frame = CGRectMake(6, 6, self.view.frame.size.width-12, self.view.frame.size.height-12)
+        UIView.animate(withDuration: 0.12, animations: {
+            self.map?.frame = CGRect(x: 6, y: 6, width: self.view.frame.size.width-12, height: self.view.frame.size.height-12)
             self.map?.layer.cornerRadius = 8
             self.blurEffectView?.alpha = 1.0
-        }) { (true) in
-            self.map?.userInteractionEnabled = true
+        }, completion: { (true) in
+            self.map?.isUserInteractionEnabled = true
             self.map?.alpha = 0.98
-        }
+        }) 
     }
     
-    func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         
         let location = locations.last! as CLLocation
         let center = CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
@@ -151,8 +151,8 @@ class ViewController: UIViewController, SCNSceneRendererDelegate, MKMapViewDeleg
         boingBallNode.position = SCNVector3(x: 0, y: 0, z: -12)
         
         let material = SCNMaterial()
-        material.specular.contents = UIColor.redColor()
-        material.diffuse.contents = UIColor.redColor()
+        material.specular.contents = UIColor.red
+        material.diffuse.contents = UIColor.red
         material.shininess = 1.0
         ball.materials = [ material ]
 
@@ -160,7 +160,7 @@ class ViewController: UIViewController, SCNSceneRendererDelegate, MKMapViewDeleg
         
         let animation2 = CABasicAnimation(keyPath: "position.y")
         animation2.toValue = cameraNode?.eulerAngles.y
-        animation2.delegate = self
+        //animation2.delegate = self
         animation2.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionDefault)
         animation2.autoreverses = false
         animation2.repeatCount = 0
@@ -179,15 +179,15 @@ class ViewController: UIViewController, SCNSceneRendererDelegate, MKMapViewDeleg
         // Create light
         let lightNode = SCNNode()
         lightNode.light = SCNLight()
-        lightNode.light!.type = SCNLightTypeOmni
+        lightNode.light!.type = SCNLight.LightType.omni
         lightNode.position = SCNVector3(x: 0, y: 10, z: 10)
         scene!.rootNode.addChildNode(lightNode)
         
         // Create ambient light
         let ambientLightNode = SCNNode()
         ambientLightNode.light = SCNLight()
-        ambientLightNode.light!.type = SCNLightTypeAmbient
-        ambientLightNode.light!.color = UIColor.darkGrayColor()
+        ambientLightNode.light!.type = SCNLight.LightType.ambient
+        ambientLightNode.light!.color = UIColor.darkGray
         scene!.rootNode.addChildNode(ambientLightNode)
         
         // Make the camera move
@@ -209,33 +209,58 @@ class ViewController: UIViewController, SCNSceneRendererDelegate, MKMapViewDeleg
             motionManager = CMMotionManager()
         }
         
-        if (motionManager?.deviceMotionAvailable != nil) {
+        if (motionManager?.isDeviceMotionAvailable != nil) {
             motionManager?.deviceMotionUpdateInterval = 1.0/60.0;
-            motionManager?.startDeviceMotionUpdatesToQueue(NSOperationQueue(), withHandler: {
-                [weak self] (data:CMDeviceMotion?, error:NSError?) -> Void in
-                if self!.initialAttitude == nil {
+            motionManager?.startDeviceMotionUpdates(to: OperationQueue()) { data, error in
+                    if self.initialAttitude == nil {
+                        
+                        // Capture the initial position
+                        self.initialAttitude = data!.attitude
+                        return
+                    }
                     
-                    // Capture the initial position
-                    self!.initialAttitude = data!.attitude
-                    return
-                }
-
-        
-                // make the new position value to be comparative to initial one
-                data!.attitude.multiplyByInverseOfAttitude(self!.initialAttitude!)
-                
-                let xRotationDelta: Float = (Float)((data?.attitude.pitch)!)
-                let yRotationDelta: Float = (Float)((data?.attitude.roll)!)
-                let zRotationDelta: Float = (Float)((data?.attitude.yaw)!)
-                
-                NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
-                    self?.rotateCamera(-yRotationDelta, y: xRotationDelta, z: zRotationDelta)
-                })
-                })
+                    
+                    // make the new position value to be comparative to initial one
+                    data!.attitude.multiply(byInverseOf: self.initialAttitude!)
+                    
+                    let xRotationDelta: Float = (Float)((data?.attitude.pitch)!)
+                    let yRotationDelta: Float = (Float)((data?.attitude.roll)!)
+                    let zRotationDelta: Float = (Float)((data?.attitude.yaw)!)
+                    
+                    OperationQueue.main.addOperation({ () -> Void in
+                        self.rotateCamera(-yRotationDelta, y: xRotationDelta, z: zRotationDelta)
+                    })
+            }
         }
+        
+        
+//        if (motionManager?.isDeviceMotionAvailable != nil) {
+//            motionManager?.deviceMotionUpdateInterval = 1.0/60.0;
+//            motionManager?.startDeviceMotionUpdates(to: OperationQueue(), withHandler: {
+//                [weak self] (data:CMDeviceMotion?, error:NSError?) -> Void in
+//                if self!.initialAttitude == nil {
+//                    
+//                    // Capture the initial position
+//                    self!.initialAttitude = data!.attitude
+//                    return
+//                }
+//
+//        
+//                // make the new position value to be comparative to initial one
+//                data!.attitude.multiply(byInverseOf: self!.initialAttitude!)
+//                
+//                let xRotationDelta: Float = (Float)((data?.attitude.pitch)!)
+//                let yRotationDelta: Float = (Float)((data?.attitude.roll)!)
+//                let zRotationDelta: Float = (Float)((data?.attitude.yaw)!)
+//
+//                OperationQueue.main.addOperation({ () -> Void in
+//                    self?.rotateCamera(-yRotationDelta, y: xRotationDelta, z: zRotationDelta)
+//                })
+//                })
+//        }
     }
     
-    func rotateCamera(x: Float, y: Float, z: Float) {
+    func rotateCamera(_ x: Float, y: Float, z: Float) {
         
         self.cameraNode?.eulerAngles.x = y
         self.cameraNode?.eulerAngles.y = -x
@@ -246,7 +271,7 @@ class ViewController: UIViewController, SCNSceneRendererDelegate, MKMapViewDeleg
 
     func setupCameraBackground () {
         captureSession = AVCaptureSession()
-        let backCamera = AVCaptureDevice.defaultDeviceWithMediaType(AVMediaTypeVideo)
+        let backCamera = AVCaptureDevice.defaultDevice(withMediaType: AVMediaTypeVideo)
         
         var error: NSError?
         var input: AVCaptureDeviceInput!
@@ -265,7 +290,7 @@ class ViewController: UIViewController, SCNSceneRendererDelegate, MKMapViewDeleg
                 captureSession!.addOutput(stillImageOutput)
                 previewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
                 previewLayer!.videoGravity = AVLayerVideoGravityResizeAspectFill
-                previewLayer!.connection?.videoOrientation = AVCaptureVideoOrientation.Portrait
+                previewLayer!.connection?.videoOrientation = AVCaptureVideoOrientation.portrait
                 previewLayer!.frame = self.view.frame
                 self.view.layer.addSublayer(previewLayer!)
                 captureSession!.startRunning()

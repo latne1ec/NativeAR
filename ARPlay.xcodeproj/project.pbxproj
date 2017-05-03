@@ -96,6 +96,8 @@
 				TargetAttributes = {
 					200133851D9838A100078947 = {
 						CreatedOnToolsVersion = 7.3;
+						DevelopmentTeam = HL4WWQQF9X;
+						LastSwiftMigration = 0830;
 					};
 				};
 			};
@@ -249,10 +251,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = HL4WWQQF9X;
 				INFOPLIST_FILE = ARPlay/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.levellabs.ARPlay;
+				PRODUCT_BUNDLE_IDENTIFIER = com.levellabs.ARPlay2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -260,10 +264,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = HL4WWQQF9X;
 				INFOPLIST_FILE = ARPlay/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.levellabs.ARPlay;
+				PRODUCT_BUNDLE_IDENTIFIER = com.levellabs.ARPlay2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
@@ -286,6 +292,7 @@
 				2001339A1D9838A100078947 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
